@@ -20,7 +20,6 @@ export class MqttApi {
                 const keys: Keys = JSON.parse(message.toString('utf8'));
                 keys.inputPublicKey = Buffer.from(keys.inputPublicKey)
                 keys.outputPrivateKey = Buffer.from(keys.outputPrivateKey);
-                console.log('Klucz' + keys.outputPrivateKey.toString())
                 this.coder.keys = keys;
             } else {
                 const inputJson = JSON.parse(((message).toString('utf8')));
