@@ -22,13 +22,13 @@ export class MqttApi {
                 keys.outputPrivateKey = Buffer.from(keys.outputPrivateKey);
                 this.coder.keys = keys;
             } else {
-                const inputJson = JSON.parse(((message).toString('utf8')));
+                const inputString = Buffer.from(message.toString('utf8'), 'base64').toString('utf8');
+                const inputJson = JSON.parse(inputString);
                 inputJson.iv = Buffer.from(inputJson.iv);
                 inputJson.ephemPublicKey = Buffer.from(inputJson.ephemPublicKey);
                 inputJson.ciphertext = Buffer.from(inputJson.ciphertext);
                 inputJson.mac = Buffer.from(inputJson.mac);
-                const decrypted = this.coder.decode(inputJson);
-                subscribeCallback(topic, decrypted);
+                this.coder.decode(inputJson).then(decrypted => subscribeCallback(topic, decrypted));
             }
         })
     }
@@ -39,6 +39,7 @@ export class MqttApi {
 
     async publish(topic: string, message: string) {
         const ecies: Ecies = await this.coder.encode(message);
-        this.client.publish(topic, Buffer.from(JSON.stringify(ecies)));
+        const encodedMessage = Buffer.from(JSON.stringify(ecies)).toString('base64');
+        this.client.publish(topic, Buffer.from(encodedMessage));
     }
 }

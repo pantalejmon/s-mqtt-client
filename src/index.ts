@@ -28,4 +28,3 @@ export class SMQTTClient {
         this._api = value;
     }
 }
-

@@ -1,7 +1,7 @@
 {
   "name": "s-mqtt-client",
-  "version": "0.0.2",
-  "description": "",
+  "version": "0.0.3",
+  "description": "Client for S-MQTT server",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
